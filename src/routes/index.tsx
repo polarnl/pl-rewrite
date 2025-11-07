@@ -42,7 +42,7 @@ function App() {
             <section
               className="w-screen h-[calc(100vh-4rem)] bg-neutral-800 pt-8 pb-8 drop-shadow-xl drop-down">
               <div className='flex flex-row h-full'>
-                <div className="flex flex-col justify-center">
+                <div className="flex flex-col justify-center w-1/2 pr-5">
                   <div className="flex items-center pl-10">
 
                     <Image
@@ -52,13 +52,13 @@ function App() {
                       height={64}
                       width={64}
                     />
-                    <h1 className="text-6xl font-bold leading-tight bg-gradient-to-r from-sky-400 to-sky-100 bg-clip-text text-transparent ml-6">
+                    <h1 className="text-6xl font-bold leading-tight bg-linear-to-r from-sky-400 to-sky-100 bg-clip-text text-transparent ml-6">
                       PolarLearn
                     </h1>
                   </div>
                   <br />
                   <br />
-                  <div className='w-1/2 items-center justify-center'>
+                  <div className='max-w-xl items-center justify-center'>
                     <h1 className="text-center mt-6 flex-col sm:flex-row  text-4xl font-bold leading-tight bg-clip-text drop-down">
                       Het gratis en Open-Source leerprogramma voor al je schoolvakken
                       <br />
@@ -69,18 +69,18 @@ function App() {
                     </div>
                   </div>
                 </div>
-                <div className="pr-5 flex items-center absolute right-0 top-0 bottom-0">
+                <div className="w-1/2 pr-5 flex items-center justify-end">
                   <img
-                    src="/banner.png?url"
+                    src="/banner.png"
                     alt={"PolarLearn banner ding"}
-                    className="max-w-full h-auto"
+                    className="w-full max-w-[600px] h-auto object-contain"
                   />
                 </div>
               </div>
             </section>
           </div>
         </div>
-        <hr className="flex-grow border-neutral-600 m-3" />
+        <hr className="grow border-neutral-600 m-3" />
         <Marquee direction='right'>
           <div
             className="tile bg-neutral-800 text-white font-bold py-2 px-4 rounded-lg min-w-36 w-auto h-14 text-center place-items-center grid"
@@ -163,7 +163,7 @@ function App() {
           </div>
 
         </Marquee>
-        <hr className="flex-grow border-neutral-600 m-3" />
+        <hr className="grow border-neutral-600 m-3" />
         <div className='flex w-full items-center justify-center flex-col'>
           <h1 className='text-2xl font-bold'>Wat onze fans vinden:</h1>
           <div className='flex flex-row gap-x-2 items-center'>
@@ -202,7 +202,7 @@ function App() {
             </div>
           </Marquee>
         </div>
-        <hr className="flex-grow border-neutral-600 m-3" />
+        <hr className="grow border-neutral-600 m-3" />
 
         <div className='h-60' />
 
@@ -301,7 +301,7 @@ function App() {
                       whileInView={{ y: 0, opacity: 1 }}
                       transition={{ duration: 0.7, delay: 1 }}
                     >
-                      PolarLearn gebruikt de nieuwste beveiligingstechnologieën, zoals Argon2id <a target='_blank' className='bg-gradient-to-r from-sky-500 to-sky-100 bg-clip-text text-transparent' href='https://www.sentinelone.com/cybersecurity-101/cybersecurity/hashing/'>hashing</a>, salting, en password peppers om jouw gegevens zo veilig mogelijk te houden. Zo kan je met een gerust hart leren. PolarLearn verzamelt en verkoopt je persoonlijke data juist niet.
+                      PolarLearn gebruikt de nieuwste beveiligingstechnologieën, zoals Argon2id <a target='_blank' className='bg-linear-to-r from-sky-500 to-sky-100 bg-clip-text text-transparent' href='https://www.sentinelone.com/cybersecurity-101/cybersecurity/hashing/'>hashing</a>, salting, en password peppers om jouw gegevens zo veilig mogelijk te houden. Zo kan je met een gerust hart leren. PolarLearn verzamelt en verkoopt je persoonlijke data juist niet.
                     </motion.p>
                   </div>
                   <div className="border-r border-neutral-600 h-full"></div>
@@ -338,7 +338,7 @@ function App() {
             height={48}
             width={48}
           />
-          <h1 className="text-5xl font-bold leading-tight bg-gradient-to-r from-sky-400 to-sky-100 bg-clip-text text-transparent ml-6">
+          <h1 className="text-5xl font-bold leading-tight bg-linear-to-r from-sky-400 to-sky-100 bg-clip-text text-transparent ml-6">
             PolarLearn
           </h1>
         </div>

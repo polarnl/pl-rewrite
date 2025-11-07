@@ -4,6 +4,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 
 import appCss from '../styles.css?url'
+import { PolarNavBar } from '@/components/NavBar'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -29,7 +30,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="">
+        <PolarNavBar />
         {children}
         <TanStackDevtools
           config={{
