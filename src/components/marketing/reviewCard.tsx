@@ -1,7 +1,7 @@
 export default function ReviewCard({ stars, author, comment, smalltext = false }: { stars: number; author: string; comment: string; smalltext?: boolean }) {
     return (
         <>
-            <div className="flex flex-col bg-neutral-800 h-64 w-72 m-auto rounded-lg p-5">
+            <div className="flex flex-col bg-neutral-800 h-64 w-72 rounded-lg p-5 mx-2">
                 <h1 className="text-2xl font-bold">
                     {author}
                 </h1>

@@ -11,6 +11,10 @@ export const Route = createRootRoute({
       {
         title: 'PolarLearn',
       },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
+      }
     ],
     links: [
       {

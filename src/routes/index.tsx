@@ -13,15 +13,8 @@ import {
   MoveIn,
   Sticky,
 } from "react-scroll-motion";
+import { Vakken } from '@/components/icons';
 
-import nsk_img from '@/img/nask.svg';
-import math_img from '@/img/math.svg';
-import eng_img from '@/img/tea_innit.svg';
-import fr_img from '@/img/baguette.svg';
-import de_img from '@/img/pretzel.svg';
-import nl_img from '@/img/nl.svg';
-import ak_img from '@/img/geography.svg';
-import ckv_img from '@/img/ckv.svg';
 import logo from '@/img/pl-500.svg';
 
 import down from '@/img/down.svg';
@@ -82,86 +75,19 @@ function App() {
         </div>
         <hr className="grow border-neutral-600 m-3" />
         <Marquee direction='right'>
-          <div
-            className="tile bg-neutral-800 text-white font-bold py-2 px-4 rounded-lg min-w-36 w-auto h-14 text-center place-items-center grid"
-          >
-            <span className="flex items-center">
-              <Image src={nl_img} alt={"nederlands plaatje"} width={20} height={20} />
-              <div className="w-2" />
-              Nederlands
-            </span>
-          </div>
-          <div className='w-4' />
-          <div
-            className="tile bg-neutral-800 text-white font-bold py-2 px-4 rounded-lg min-w-36 w-auto h-14 text-center place-items-center grid"
-          >
-            <span className="flex items-center">
-              <Image src={de_img} alt={"duits plaatje"} width={20} height={20} />
-              <div className="w-2" />
-              Duits
-            </span>
-          </div>
-          <div className='w-4' />
-          <div
-            className="tile bg-neutral-800 text-white font-bold py-2 px-4 rounded-lg min-w-36 w-auto h-14 text-center place-items-center grid"
-          >
-            <span className="flex items-center">
-              <Image src={fr_img} alt={"frans plaatje"} width={20} height={20} />
-              <div className="w-2" />
-              Frans
-            </span>
-          </div>
-          <div className='w-4' />
-          <div
-            className="tile bg-neutral-800 text-white font-bold py-2 px-4 rounded-lg min-w-36 w-auto h-14 text-center place-items-center grid"
-          >
-            <span className="flex items-center">
-              <Image src={eng_img} alt={"engels plaatje"} width={20} height={20} />
-              <div className="w-2" />
-              Engels
-            </span>
-          </div>
-          <div className='w-4' />
-          <div
-            className="tile bg-neutral-800 text-white font-bold py-2 px-4 rounded-lg min-w-36 w-auto h-14 text-center place-items-center grid"
-          >
-            <span className="flex items-center">
-              <Image src={math_img} alt={"wiskunde plaatje"} width={20} height={20} />
-              <div className="w-2" />
-              Wiskunde
-            </span>
-          </div>
-          <div className='w-4' />
-          <div
-            className="tile bg-neutral-800 text-white font-bold py-2 px-4 rounded-lg min-w-36 w-auto h-14 text-center place-items-center grid"
-          >
-            <span className="flex items-center">
-              <Image src={nsk_img} alt={"nask plaatje"} width={20} height={20} />
-              <div className="w-2" />
-              NaSk
-            </span>
-          </div>
-          <div className='w-4' />
-          <div
-            className="tile bg-neutral-800 text-white font-bold py-2 px-4 rounded-lg min-w-36 w-auto h-14 text-center place-items-center grid"
-          >
-            <span className="flex items-center">
-              <Image src={ak_img} alt={"aardrijkskunde plaatje"} width={20} height={20} />
-              <div className="w-2" />
-              Aardrijkskunde
-            </span>
-          </div>
-          <div className='w-4' />
-          <div
-            className="tile bg-neutral-800 text-white font-bold py-2 px-4 rounded-lg min-w-36 w-auto h-14 text-center place-items-center grid"
-          >
-            <span className="flex items-center">
-              <Image src={ckv_img} alt={"ckv plaatje"} width={20} height={20} />
-              <div className="w-2" />
-              CKV
-            </span>
-          </div>
-
+          {Vakken.map((vak) => (
+            <>
+              <div
+                className="tile bg-neutral-800 text-white font-bold py-2 px-4 rounded-lg min-w-36 w-auto h-14 text-center place-items-center grid mx-2"
+              >
+                <span className="flex items-center">
+                  <Image src={vak.icon} alt={vak.naam + " plaatje"} width={20} height={20} />
+                  <div className="w-2" />
+                  {vak.naam}
+                </span>
+              </div>
+            </>
+          ))}
         </Marquee>
         <hr className="grow border-neutral-600 m-3" />
         <div className='flex w-full items-center justify-center flex-col'>
@@ -189,7 +115,7 @@ function App() {
           </div>
           <div className='h-4' />
           <Marquee direction='left'>
-            <div className='flex flex-row gap-x-4 w-min '>
+            <div className='flex flex-row w-min'>
               <ReviewCard stars={5} author='andrei1010' comment='Door de gratis forum en de samenvattingen heb ik eindelijk topcijfers voor geschiedenis!' />
               <ReviewCard stars={4.7} author='EGaming200' comment='PolarLearn heeft mij geholpen met leren voor toetsen' />
               <ReviewCard stars={5} author='MrApfelstrudel' comment='Door PolarLearn heb ik eindelijk goede cijfers voor frans!' />

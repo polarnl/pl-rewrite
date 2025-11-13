@@ -11,27 +11,37 @@ export default function Marquee({ children, direction = "left" }: MarqueeProps) 
   const [copyWidth, setCopyWidth] = useState(0);
 
   useEffect(() => {
-    if (copyRef.current) {
-      setCopyWidth(copyRef.current.offsetWidth);
-    }
+    const el = copyRef.current;
+    if (!el) return;
+
+    const update = () => setCopyWidth(el.offsetWidth);
+    update();
+
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener('resize', update);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', update);
+    };
   }, [children]);
 
   return (
     <div className="w-full overflow-hidden">
       <div
-        className="flex animate-marquee"
+        className="flex"
         style={{
           width: copyWidth ? `${copyWidth * 2}px` : 'auto',
-          '--move-distance': `${copyWidth}px`
+          '--move-distance': `${copyWidth}px`,
+          animation: `${direction === "right" ? "marquee-right" : "marquee-left"} 20s linear infinite`
         } as React.CSSProperties}
       >
         <div ref={copyRef} className="flex flex-none">
           {children}
-          <div className="w-4" />
         </div>
         <div className="flex flex-none">
           {children}
-          <div className="w-4" />
         </div>
       </div>
       <style>{`
@@ -42,9 +52,6 @@ export default function Marquee({ children, direction = "left" }: MarqueeProps) 
         @keyframes marquee-right {
           0% { transform: translateX(calc(-1 * var(--move-distance))); }
           100% { transform: translateX(0); }
-        }
-        .animate-marquee {
-          animation: ${direction === "right" ? "marquee-right" : "marquee-left"} 20s linear infinite;
         }
       `}</style>
     </div>

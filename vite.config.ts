@@ -4,9 +4,11 @@ import viteReact from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
 import { nitro } from 'nitro/vite'
+import utwm from 'unplugin-tailwindcss-mangle/vite'
+import crypto from 'crypto'
+import path from "path"
 
 import { WebSocketServer } from 'ws'
-import path from 'path'
 
 // Dev-only plugin to mirror Nitro startup behavior in Vite dev
 const devStartup = {
@@ -65,8 +67,20 @@ export default defineConfig({
     tanstackStart(),
     viteReact(),
     nitro({
-      
-    })
+      config: {
+        preset: 'node-server',
+      }
+    }),
+    // utwm({
+    //   generator: {
+    //     classPrefix: 'plrn-',
+    //     log: false,
+    //     customGenerate: (orig, _, __) => {
+    //       const hash = crypto.createHash('md5').update(orig).digest('hex').slice(0, 8)
+    //       return `plrn-${hash}`
+    //     }
+    //   },
+    // })
   ],
   ssr: {
     external: ['.prisma/client', '@prisma/client', 'argon2']
@@ -74,6 +88,11 @@ export default defineConfig({
   build: {
     rollupOptions: {
       external: ['.prisma/client', '@prisma/client', 'argon2']
+    }
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
     }
   }
 })
