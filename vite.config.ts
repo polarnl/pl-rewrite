@@ -71,16 +71,16 @@ export default defineConfig({
         preset: 'node-server',
       }
     }),
-    // utwm({
-    //   generator: {
-    //     classPrefix: 'plrn-',
-    //     log: false,
-    //     customGenerate: (orig, _, __) => {
-    //       const hash = crypto.createHash('md5').update(orig).digest('hex').slice(0, 8)
-    //       return `plrn-${hash}`
-    //     }
-    //   },
-    // })
+    utwm({
+      generator: {
+        classPrefix: 'plrn-',
+        log: false,
+        customGenerate: (orig, _, __) => {
+          const hash = crypto.createHash('md5').update(orig).digest('hex').slice(0, 8)
+          return `plrn-${hash}`
+        }
+      },
+    })
   ],
   ssr: {
     external: ['.prisma/client', '@prisma/client', 'argon2']
@@ -89,6 +89,9 @@ export default defineConfig({
     rollupOptions: {
       external: ['.prisma/client', '@prisma/client', 'argon2']
     }
+  },
+  optimizeDeps: {
+    exclude: ['#tanstack-router-entry', '#tanstack-start-entry', 'tanstack-start-manifest:v', 'tanstack-start-injected-head-scripts:v']
   },
   resolve: {
     alias: {

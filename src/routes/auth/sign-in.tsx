@@ -9,47 +9,41 @@ import { GoogleSignIn } from '@/components/button/GoogleSignIn';
 import { EntreeSignIn } from '@/components/button/EntreeSignIn';
 import { Label } from '@/components/ui/label';
 import Button1 from '@/components/button/Button1';
+import { setCookie } from '@tanstack/start/server'
 
 export const Route = createFileRoute('/auth/sign-in')({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const formData = await request.formData();
-        const email = formData.get('email') as string;
-        const password = formData.get('password') as string;
+        const formData = await request.formData()
+        const email = formData.get('email') as string
+        const password = formData.get('password') as string
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email,
-          }
+        const user = await prisma.user.findUnique({ where: { email } })
+        if (!user) {
+          return Response.redirect('/auth/sign-in?error=invalid_credentials', 301)
+        }
+
+        const hashedPassword = await hashPassword(password, user.salt)
+        if (hashedPassword !== user.password) {
+          return Response.redirect('/auth/sign-in?error=invalid_credentials', 301)
+        }
+
+        const session = await generateSession(user.id)
+        const cookieValue = await generateSessionCookie(session.sessionID)
+
+        setCookie('polarlearn.session', cookieValue, {
+          httpOnly: true,
+          path: '/',
+          sameSite: 'lax',
+          maxAge: 60 * 60 * 24 * 30,
         })
 
-        if (!user) {
-          return new Response(null, { status: 301, headers: { Location: '/auth/sign-in?error=invalid_credentials' } });
-        }
-
-        const hashedPassword = await hashPassword(password, user.salt);
-        if (hashedPassword !== user.password) {
-          return new Response(null, { status: 301, headers: { Location: '/auth/sign-in?error=invalid_credentials' } });
-        }
-
-        const session = await generateSession(user.id);
-        const cookie = await generateSessionCookie(session.sessionID);
-
-        const resp = new Response(null, {
-          status: 301,
-          headers: {
-            Location: '',
-            'Set-Cookie': cookie,
-          },
-        });
-
         if (!user.loginAllowed) {
-          resp.headers.set('Location', '/auth/banned');
+          return Response.redirect('/auth/banned', 301)
         }
 
-        resp.headers.set('Location', '/home/start');
-        return resp;
+        return Response.redirect('/home/start', 301)
       }
     }
   },

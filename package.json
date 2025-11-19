@@ -23,6 +23,7 @@
     "@tanstack/react-router-ssr-query": "^1.135.2",
     "@tanstack/react-start": "^1.135.2",
     "@tanstack/router-plugin": "^1.135.2",
+    "@tanstack/start": "^1.120.20",
     "@types/d3": "^7.4.3",
     "@types/ws": "^8.18.1",
     "@unpic/react": "^1.0.1",
