@@ -2,9 +2,9 @@ export function GoogleSignIn({ url }: { url: string }) {
   return (
     <a
       href={url}
-      className="flex rounded-lg w-fit h-10 bg-neutral-800 border border-neutral-700 hover:border-neutral-500 hover:bg-neutral-750 transition duration-200"
+      className="flex rounded-lg max-w-fit min-h-10 bg-neutral-800 border border-neutral-700 hover:border-neutral-500 hover:bg-neutral-750 transition duration-200"
     >
-      <div className="flex items-center space-x-2 px-2">
+      <div className="flex items-center space-x-2 px-2 w-full text-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           x="0px"

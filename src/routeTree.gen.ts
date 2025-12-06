@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as HomeStartRouteImport } from './routes/home/start'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
+import { Route as AuthBannedRouteImport } from './routes/auth/banned'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,15 +35,22 @@ const AuthSignInRoute = AuthSignInRouteImport.update({
   path: '/auth/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthBannedRoute = AuthBannedRouteImport.update({
+  id: '/auth/banned',
+  path: '/auth/banned',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth/banned': typeof AuthBannedRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/home/start': typeof HomeStartRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth/banned': typeof AuthBannedRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/home/start': typeof HomeStartRoute
@@ -50,20 +58,33 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth/banned': typeof AuthBannedRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/home/start': typeof HomeStartRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/sign-in' | '/auth/sign-up' | '/home/start'
+  fullPaths:
+    | '/'
+    | '/auth/banned'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/home/start'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/sign-in' | '/auth/sign-up' | '/home/start'
-  id: '__root__' | '/' | '/auth/sign-in' | '/auth/sign-up' | '/home/start'
+  to: '/' | '/auth/banned' | '/auth/sign-in' | '/auth/sign-up' | '/home/start'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth/banned'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/home/start'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthBannedRoute: typeof AuthBannedRoute
   AuthSignInRoute: typeof AuthSignInRoute
   AuthSignUpRoute: typeof AuthSignUpRoute
   HomeStartRoute: typeof HomeStartRoute
@@ -99,11 +120,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/banned': {
+      id: '/auth/banned'
+      path: '/auth/banned'
+      fullPath: '/auth/banned'
+      preLoaderRoute: typeof AuthBannedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthBannedRoute: AuthBannedRoute,
   AuthSignInRoute: AuthSignInRoute,
   AuthSignUpRoute: AuthSignUpRoute,
   HomeStartRoute: HomeStartRoute,

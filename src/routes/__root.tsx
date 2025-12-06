@@ -4,6 +4,8 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import appCss from '../styles.css?url'
 import { PolarNavBar } from '@/components/NavBar'
+import { Toaster } from 'react-hot-toast'
+import { CircleCheck, CircleX } from 'lucide-react'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -34,6 +36,24 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="">
+        <Toaster
+          position='top-center'
+          toastOptions={{
+            duration: 3000,
+            style: {
+              borderRadius: '10px',
+              background: '#333',
+              color: '#fff',
+              maxWidth: '400px',
+            },
+            // success: {
+            //   icon: <CircleCheck size={50} />,
+            // },
+            // error: {
+            //   icon: <CircleX size={50} />,
+            // },
+          }}
+        />
         <PolarNavBar />
         {children}
         {process.env.NODE_ENV === 'development' && (

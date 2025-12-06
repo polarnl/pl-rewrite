@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { prisma } from '@/utils/db'
 import { hashPassword } from '@/utils/auth/password';
 import { generateSession, generateSessionCookie } from '@/utils/auth/session';
@@ -9,11 +9,28 @@ import { GoogleSignIn } from '@/components/button/GoogleSignIn';
 import { EntreeSignIn } from '@/components/button/EntreeSignIn';
 import { Label } from '@/components/ui/label';
 import Button1 from '@/components/button/Button1';
-import { setCookie } from '@tanstack/start/server'
+import { setCookie } from '@tanstack/react-start/server'
+import { redirect } from '@tanstack/react-router'
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
+import { QOUTES } from '@/utils/constants';
+import { Key } from 'lucide-react';
 
 export const Route = createFileRoute('/auth/sign-in')({
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      err: search.err as string | undefined,
+    }
+  },
+
+  loader: async () => {
+    // Voor quote met SSR, niet met je tengels er aan zitten!!
+    const quote = QOUTES[Math.floor(Math.random() * QOUTES.length)];
+    return quote;
+  },
   server: {
     handlers: {
+      // Inlog route nadat de form is verzonden
       POST: async ({ request }) => {
         const formData = await request.formData()
         const email = formData.get('email') as string
@@ -21,12 +38,24 @@ export const Route = createFileRoute('/auth/sign-in')({
 
         const user = await prisma.user.findUnique({ where: { email } })
         if (!user) {
-          return Response.redirect('/auth/sign-in?error=invalid_credentials', 301)
+          throw redirect({
+            to: '/auth/sign-in',
+            search: {
+              err: 'invalid_credentials',
+            },
+            statusCode: 303
+          })
         }
 
         const hashedPassword = await hashPassword(password, user.salt)
         if (hashedPassword !== user.password) {
-          return Response.redirect('/auth/sign-in?error=invalid_credentials', 301)
+          throw redirect({
+            to: '/auth/sign-in',
+            search: {
+              err: 'invalid_credentials',
+            },
+            statusCode: 303
+          })
         }
 
         const session = await generateSession(user.id)
@@ -40,10 +69,10 @@ export const Route = createFileRoute('/auth/sign-in')({
         })
 
         if (!user.loginAllowed) {
-          return Response.redirect('/auth/banned', 301)
+          throw redirect({ to: '/auth/banned' })
         }
 
-        return Response.redirect('/home/start', 301)
+        throw redirect({ to: '/home/start' })
       }
     }
   },
@@ -51,11 +80,40 @@ export const Route = createFileRoute('/auth/sign-in')({
 })
 
 function RouteComponent() {
+  const { err } = Route.useSearch()
+  const serverQuote = Route.useLoaderData() as string | undefined
+  const router = useRouter()
+  useEffect(() => {
+    if (err) {
+      toast.error("Verkeerde inloggegevens. Probeer het opnieuw, of klik op \"Wachtwoord vergeten\".")
+      router.history.replace('/auth/sign-in')
+    }
+  }, [])
+
+  const quote = serverQuote ?? QOUTES[Math.floor(Math.random() * QOUTES.length)]
   return (
     <>
-      <section className="bg-neutral-900 font-[family-name:var(--font-geist-sans)] py-5">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-          <div className="flex items-center mb-6 text-2xl font-semibold text-gray-900">
+      <section className="bg-neutral-900 font-(family-name:--font-geist-sans) w-screen h-screen flex flex-row">
+        {/* <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
+
+          <div className="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 bg-neutral-800 border-neutral-700">
+            <div className="p-3 space-y-4 md:space-y-6 sm:p-8 text-center">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl dark:text-white">
+                Log in
+              </h1>
+            </div>
+
+
+
+          </div>
+        </div> */}
+        <div className='hidden md:flex md:w-2/3 h-screen items-center justify-center overflow-hidden'>
+          <h1 className='m-4 max-h-full font-bold text-center leading-tight wrap-break-word px-6 max-w-4xl text-[clamp(1.5rem,6vw,4.5rem)]'>
+            {quote}
+          </h1>
+        </div>
+        <div className='flex md:block w-full h-screen bg-neutral-800 md:w-1/2 items-center justify-center'>
+          <div className="flex items-center justify-center mt-2 mb-3 text-2xl font-semibold text-gray-900">
             <Image
               className="ml-4 px-3"
               src={polarlearn_logo}
@@ -63,35 +121,49 @@ function RouteComponent() {
               height={75}
               width={75}
             />
-            <p className="text-center text-4xl font-extrabold leading-tight bg-gradient-to-r from-sky-400 to-sky-100 bg-clip-text text-transparent">
+            <p className="text-center text-5xl font-extrabold leading-tight bg-linear-to-r from-sky-400 to-sky-100 bg-clip-text text-transparent">
               PolarLearn
             </p>
           </div>
-          <div className="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 bg-neutral-800 border-neutral-700">
-            <div className="p-6 space-y-4 md:space-y-6 sm:p-8 text-center">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl dark:text-white">
-                Log in
-              </h1>
-            </div>
-            <div className='w-full items-center justify-center flex flex-row gap-6'>
-              <GoogleSignIn url="" />
-              <EntreeSignIn url="" />
-            </div>
+          <h1 className='w-full text-center text-4xl font-bold'>Log in</h1>
+          <div className='w-full items-center text-center justify-center mt-4'>
+            <Button1
+              text={"Inloggen met schoolaccount"}
+              icon={<Key />}
+            />
             <div className="flex items-center m-4">
               <hr className="grow border-neutral-600" />
               <span className="mx-4 text-gray-500 dark:text-gray-400">of</span>
               <hr className="grow border-neutral-600" />
             </div>
+
+            <div className='w-full items-center justify-center flex flex-row gap-6'>
+              <GoogleSignIn url="" />
+              <EntreeSignIn url="" />
+            </div>
+
+            <div className="flex items-center m-4">
+              <hr className="grow border-neutral-600" />
+              <span className="mx-4 text-gray-500 dark:text-gray-400">of</span>
+              <hr className="grow border-neutral-600" />
+            </div>
+
             <form method='POST' className='mx-4'>
-              <Label htmlFor="email" className="my-4 text-lg">Your email</Label>
+              <Label htmlFor="email" className="my-4 text-lg">Jouw e-mailadres</Label>
               <Input type="email" name="email" id="email" className=" w-full h-10" placeholder="you@example.com" />
-              <Label htmlFor="password" className="my-4 text-lg">Your password</Label>
+              <Label htmlFor="password" className="my-4 text-lg">Jouw wachtwoord</Label>
               <Input type="password" name="password" id="password" className="mb-6 w-full h-10" placeholder="••••••••" />
-              <Button1
-                type="submit"
-                text={"Sign In"}
-                className='w-full mb-5'
-              />
+              <div className='px-3'>
+                <Button1
+                  type="submit"
+                  text={"Log In"}
+                  className='w-full mb-3'
+                />
+              </div>
+              <p className='mb-3 text-neutral-500'>
+                Heb je nog geen account?
+                <Link to={"/auth/sign-up"} className='text-neutral-400 font-bold'> Maak een account aan!</Link>
+              </p>
             </form>
           </div>
         </div>

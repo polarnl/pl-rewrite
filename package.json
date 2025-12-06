@@ -42,6 +42,7 @@
     "prisma": "^6.19.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hot-toast": "^2.6.0",
     "react-markdown": "^10.1.0",
     "react-scroll-motion": "^0.3.5",
     "rehype-highlight": "^7.0.2",
