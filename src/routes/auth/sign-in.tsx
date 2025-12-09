@@ -107,13 +107,8 @@ function RouteComponent() {
 
           </div>
         </div> */}
-        <div className='hidden md:flex md:w-2/3 h-screen items-center justify-center overflow-hidden'>
-          <h1 className='m-4 max-h-full font-bold text-center leading-tight wrap-break-word px-6 max-w-4xl text-[clamp(1.5rem,6vw,4.5rem)]'>
-            {quote}
-          </h1>
-        </div>
-        <div className='flex md:block w-full h-screen bg-neutral-800 md:w-1/2 items-center justify-center'>
-          <div className="flex items-center justify-center mt-2 mb-3 text-2xl font-semibold text-gray-900">
+        <div className='hidden md:flex md:w-2/3 h-screen items-center justify-center overflow-hidden flex-col'>
+          <div className="flex flex-row items-center justify-center mt-2 mb-3 text-2xl font-semibold text-gray-900">
             <Image
               className="ml-4 px-3"
               src={polarlearn_logo}
@@ -125,46 +120,45 @@ function RouteComponent() {
               PolarLearn
             </p>
           </div>
-          <h1 className='w-full text-center text-4xl font-bold'>Log in</h1>
-          <div className='w-full items-center text-center justify-center mt-4'>
-            <Button1
-              text={"Inloggen met schoolaccount"}
-              icon={<Key />}
-            />
-            <div className="flex items-center m-4">
-              <hr className="grow border-neutral-600" />
-              <span className="mx-4 text-gray-500 dark:text-gray-400">of</span>
-              <hr className="grow border-neutral-600" />
-            </div>
+          <h1 className='m-4 max-h-full font-bold text-center leading-tight wrap-break-word px-6 max-w-4xl text-[clamp(1.5rem,6vw,4.5rem)]'>
+            {quote}
+          </h1>
+        </div>
+        <div className="flex h-screen w-full items-center justify-center bg-neutral-800 md:w-1/2">
+          <div className="flex w-full max-w-md flex-col items-center justify-center px-6 py-12">
+            <h1 className="w-full text-center text-4xl font-bold">Log in</h1>
 
-            <div className='w-full items-center justify-center flex flex-row gap-6'>
-              <GoogleSignIn url="" />
-              <EntreeSignIn url="" />
-            </div>
-
-            <div className="flex items-center m-4">
-              <hr className="grow border-neutral-600" />
-              <span className="mx-4 text-gray-500 dark:text-gray-400">of</span>
-              <hr className="grow border-neutral-600" />
-            </div>
-
-            <form method='POST' className='mx-4'>
-              <Label htmlFor="email" className="my-4 text-lg">Jouw e-mailadres</Label>
-              <Input type="email" name="email" id="email" className=" w-full h-10" placeholder="you@example.com" />
-              <Label htmlFor="password" className="my-4 text-lg">Jouw wachtwoord</Label>
-              <Input type="password" name="password" id="password" className="mb-6 w-full h-10" placeholder="••••••••" />
-              <div className='px-3'>
-                <Button1
-                  type="submit"
-                  text={"Log In"}
-                  className='w-full mb-3'
-                />
+            <div className="mt-6 w-full">
+              <div className="flex flex-row items-center justify-center gap-6">
+                <GoogleSignIn url="" />
+                <EntreeSignIn url="" />
               </div>
-              <p className='mb-3 text-neutral-500'>
-                Heb je nog geen account?
-                <Link to={"/auth/sign-up"} className='text-neutral-400 font-bold'> Maak een account aan!</Link>
-              </p>
-            </form>
+
+              <div className="flex items-center py-6">
+                <hr className="grow border-neutral-600" />
+                <span className="mx-4 text-gray-500 dark:text-gray-400">of</span>
+                <hr className="grow border-neutral-600" />
+              </div>
+
+              <form method="POST" className="flex flex-col gap-4">
+                <div className="flex flex-col text-left">
+                  <Label htmlFor="email" className="text-lg">Jouw e-mailadres</Label>
+                  <Input type="email" name="email" id="email" className="h-10" placeholder="you@example.com" />
+                </div>
+
+                <div className="flex flex-col text-left">
+                  <Label htmlFor="password" className="text-lg">Jouw wachtwoord</Label>
+                  <Input type="password" name="password" id="password" className="h-10" placeholder="••••••••" />
+                </div>
+
+                <Button1 type="submit" text="Log In" className="w-full" />
+
+                <p className="text-center text-neutral-500">
+                  Heb je nog geen account?
+                  <Link to="/auth/sign-up" className="pl-2 font-bold text-neutral-400">Maak een account aan!</Link>
+                </p>
+              </form>
+            </div>
           </div>
         </div>
       </section>

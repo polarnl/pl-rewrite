@@ -14,3 +14,7 @@ todos.json
 
 .tw-patch/
 pl-rewrite.code-workspace
+
+# de logs die de installer maakt
+nohup.out
+install/mongo/

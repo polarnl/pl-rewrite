@@ -1,13 +1,5 @@
 // Dit is een verzameling van de vakken en icons die worden gebruikt op de website
 import { Image } from "@unpic/react"
-import { memo } from "react"
-
-interface ComboboxItem {
-  value: string;
-  label: React.ReactNode;
-  searchText: string;
-}
-
 import nsk_img from '@/img/nask.svg'
 import wis_img from '@/img/math.svg'
 import eng_img from '@/img/tea_innit.svg'
@@ -203,33 +195,42 @@ export const subjectEmojiMap: Record<string, React.ReactNode> = Object.fromEntri
     </span>
   ])
 );
+
+// Onderstaande functies zijn deprecated;
+
+// interface ComboboxItem {
+//   value: string;
+//   label: React.ReactNode;
+//   searchText: string;
+// }
+
+
 // deze lijsten moet je eig niet gebruiken
+// export const getSubjectIcon = (subjectCode: string) => {
+//   const vak = Vakken.find(v => v.afkorting === subjectCode);
+//   return vak?.icon ?? null;
+// };
 
-export const getSubjectIcon = (subjectCode: string) => {
-  const vak = Vakken.find(v => v.afkorting === subjectCode);
-  return vak?.icon ?? null;
-};
+// export const getSubjectName = (subjectCode: string) => {
+//   const vak = Vakken.find(v => v.afkorting === subjectCode);
+//   return vak?.naam ?? subjectCode;
+// };
 
-export const getSubjectName = (subjectCode: string) => {
-  const vak = Vakken.find(v => v.afkorting === subjectCode);
-  return vak?.naam ?? subjectCode;
-};
-
-export const isLanguageSubject = (subjectCode: string) => {
-  const vak = Vakken.find(v => v.afkorting === subjectCode);
-  return vak?.istaal ?? false;
-};
-const SubjectLabel = memo(({ icon, alt, label }: { icon: any; alt: string; label: string }) => (
-  <div className="flex items-center">
-    <Image src={icon} alt={alt} width={24} height={24} className="mr-2" />
-    <span>{label}</span>
-  </div>
-));
-export const defaultItems: ComboboxItem[] = Vakken.map(vak => ({
-  value: vak.afkorting,
-  label: <SubjectLabel icon={vak.icon} alt={vak.naam.toLowerCase()} label={vak.naam} />,
-  searchText: vak.naam,
-}));
-export const icons = Object.fromEntries(
-  Vakken.map(vak => [vak.afkorting, vak.icon])
-) as Record<string, any>;
+// export const isLanguageSubject = (subjectCode: string) => {
+//   const vak = Vakken.find(v => v.afkorting === subjectCode);
+//   return vak?.istaal ?? false;
+// };
+// const SubjectLabel = memo(({ icon, alt, label }: { icon: any; alt: string; label: string }) => (
+//   <div className="flex items-center">
+//     <Image src={icon} alt={alt} width={24} height={24} className="mr-2" />
+//     <span>{label}</span>
+//   </div>
+// ));
+// export const defaultItems: ComboboxItem[] = Vakken.map(vak => ({
+//   value: vak.afkorting,
+//   label: <SubjectLabel icon={vak.icon} alt={vak.naam.toLowerCase()} label={vak.naam} />,
+//   searchText: vak.naam,
+// }));
+// export const icons = Object.fromEntries(
+//   Vakken.map(vak => [vak.afkorting, vak.icon])
+// ) as Record<string, any>;
