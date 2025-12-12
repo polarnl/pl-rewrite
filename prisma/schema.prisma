@@ -17,27 +17,76 @@ model config {
 }
 
 model User {
-  id             String    @id @map("_id") @db.String
-  gebruikersnaam String    @unique
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  gebruikersnaam String         @unique
   name           String
-  email          String?   @unique
+  email          String?        @unique
   emailVerified  DateTime?
   image          String?
   password       String
   salt           String
-  theme          String?   @default("dark")
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  loginAllowed   Boolean   @default(true)
-  forumBanned    Boolean   @default(false)
+  theme          Theme?         @default(dark)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  loginAllowed   Boolean        @default(true)
+  forumBanned    Boolean        @default(false)
+  lists          list[]         @relation("UserLists")
+  role           role           @default(USER)
+  sessions       Session[]
+  learnSessions  learnSession[]
 }
 
 model Session {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   sessionID String   @unique
   userId    String   @db.String
+  user      User     @relation(fields: [userId], references: [id])
   expires   DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model learnSession {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  parentList list   @relation(fields: [listId], references: [id])
+  listId     String @db.ObjectId
+
+  listItems listItem[]
+
+  creator   User   @relation(fields: [creatorId], references: [id])
+  creatorId String @db.String
+
+  time      Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+type listItem {
+  key              String
+  value            String
+  correctCounter   Int?   @default(0)
+  incorrectCounter Int?   @default(0)
+}
+
+model list {
+  id      String     @id @default(auto()) @map("_id") @db.ObjectId
+  title   String
+  items   listItem[]
+  makerId String     @db.String
+  maker   User       @relation("UserLists", fields: [makerId], references: [id])
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  learnSessions learnSession[]
+}
+
+enum Theme {
+  light
+  dark
+}
+
+enum role {
+  ADMIN
+  USER
 }

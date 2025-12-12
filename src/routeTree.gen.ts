@@ -14,6 +14,7 @@ import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as AuthBannedRouteImport } from './routes/auth/banned'
 import { Route as AppStartRouteImport } from './routes/app/start'
+import { Route as AppListsRouteRouteImport } from './routes/app/lists/route'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,9 +41,15 @@ const AppStartRoute = AppStartRouteImport.update({
   path: '/app/start',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppListsRouteRoute = AppListsRouteRouteImport.update({
+  id: '/app/lists',
+  path: '/app/lists',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app/lists': typeof AppListsRouteRoute
   '/app/start': typeof AppStartRoute
   '/auth/banned': typeof AuthBannedRoute
   '/auth/sign-in': typeof AuthSignInRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/lists': typeof AppListsRouteRoute
   '/app/start': typeof AppStartRoute
   '/auth/banned': typeof AuthBannedRoute
   '/auth/sign-in': typeof AuthSignInRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app/lists': typeof AppListsRouteRoute
   '/app/start': typeof AppStartRoute
   '/auth/banned': typeof AuthBannedRoute
   '/auth/sign-in': typeof AuthSignInRoute
@@ -67,15 +76,23 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/app/lists'
     | '/app/start'
     | '/auth/banned'
     | '/auth/sign-in'
     | '/auth/sign-up'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app/start' | '/auth/banned' | '/auth/sign-in' | '/auth/sign-up'
+  to:
+    | '/'
+    | '/app/lists'
+    | '/app/start'
+    | '/auth/banned'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
   id:
     | '__root__'
     | '/'
+    | '/app/lists'
     | '/app/start'
     | '/auth/banned'
     | '/auth/sign-in'
@@ -84,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppListsRouteRoute: typeof AppListsRouteRoute
   AppStartRoute: typeof AppStartRoute
   AuthBannedRoute: typeof AuthBannedRoute
   AuthSignInRoute: typeof AuthSignInRoute
@@ -127,11 +145,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppStartRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/lists': {
+      id: '/app/lists'
+      path: '/app/lists'
+      fullPath: '/app/lists'
+      preLoaderRoute: typeof AppListsRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppListsRouteRoute: AppListsRouteRoute,
   AppStartRoute: AppStartRoute,
   AuthBannedRoute: AuthBannedRoute,
   AuthSignInRoute: AuthSignInRoute,
