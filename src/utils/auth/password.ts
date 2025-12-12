@@ -13,3 +13,6 @@ export function hashPassword(password: string, salt: string): Promise<string> {
       })
   })
 }
+export function generateSalt(): string {
+  return crypto.getRandomValues(new Uint8Array(16)).toString();
+}

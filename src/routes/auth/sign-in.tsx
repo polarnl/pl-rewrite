@@ -56,10 +56,10 @@ export const Route = createFileRoute('/auth/sign-in')({
             },
             statusCode: 303
           })
-        }
+        };
 
-        const session = await generateSession(user.id)
-        const cookieValue = await generateSessionCookie(session.sessionID)
+        const session = await generateSession(user.id);
+        const cookieValue = await generateSessionCookie(session.sessionID);
 
         setCookie('polarlearn.session', cookieValue, {
           httpOnly: true,
@@ -80,17 +80,20 @@ export const Route = createFileRoute('/auth/sign-in')({
 })
 
 function RouteComponent() {
-  const { err } = Route.useSearch()
-  const serverQuote = Route.useLoaderData() as string | undefined
-  const router = useRouter()
+  const { err } = Route.useSearch();
+  const serverQuote = Route.useLoaderData() as string | undefined;
+  const router = useRouter();
   useEffect(() => {
     if (err) {
-      toast.error("Verkeerde inloggegevens. Probeer het opnieuw, of klik op \"Wachtwoord vergeten\".")
-      router.history.replace('/auth/sign-in')
+      if (err === 'user_exists') toast.error("Er bestaat al een account met dit e-mailadres. Probeer in te loggen.");
+      else if (err === 'invalid_credentials') {
+        toast.error("Verkeerde inloggegevens. Probeer het opnieuw, of klik op \"Wachtwoord vergeten\".");
+      }
+      router.history.replace('/auth/sign-in');
     }
   }, [])
 
-  const quote = serverQuote ?? QOUTES[Math.floor(Math.random() * QOUTES.length)]
+  const quote = serverQuote ?? QOUTES[Math.floor(Math.random() * QOUTES.length)];
   return (
     <>
       <section className="bg-neutral-900 font-(family-name:--font-geist-sans) w-screen h-screen flex flex-row">
@@ -155,7 +158,7 @@ function RouteComponent() {
 
                 <p className="text-center text-neutral-500">
                   Heb je nog geen account?
-                  <Link to="/auth/sign-up" className="pl-2 font-bold text-neutral-400">Maak een account aan!</Link>
+                  <Link to="/auth/sign-up" search={{ err: undefined }} className="pl-2 font-bold text-neutral-400">Maak een account aan!</Link>
                 </p>
               </form>
             </div>
