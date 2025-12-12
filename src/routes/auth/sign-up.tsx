@@ -75,9 +75,9 @@ export const Route = createFileRoute('/auth/sign-up')({
           httpOnly: true,
           path: '/',
           sameSite: 'lax',
-          maxAge: 60 * 60 * 24 * 30,
+          maxAge: 60 * 60 * 24 * 30, // 30 dagen
         })
-        throw redirect({ to: '/home/start', statusCode: 200 })
+        throw redirect({ to: '/app/start', statusCode: 200 })
       }
     }
   },

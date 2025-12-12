@@ -28,6 +28,11 @@ export function PolarNavBar() {
               <Button1 text={"Log in"} redirectTo="/auth/sign-in" className="mr-4" useClNav={true} />
             </>
           )}
+          {location.startsWith('/app') && (
+            <>
+              <Button1 text={"Home"} redirectTo="/app/start" className="mr-4" useClNav={true} />
+            </>
+          )}
         </div>
       </nav>
       <div className="h-16" />

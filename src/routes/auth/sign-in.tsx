@@ -72,7 +72,7 @@ export const Route = createFileRoute('/auth/sign-in')({
           throw redirect({ to: '/auth/banned' })
         }
 
-        throw redirect({ to: '/home/start' })
+        throw redirect({ to: '/app/start' })
       }
     }
   },
