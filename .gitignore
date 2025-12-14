@@ -18,3 +18,6 @@ pl-rewrite.code-workspace
 # de logs die de installer maakt
 nohup.out
 install/mongo/
+
+# de prisma client
+generated/

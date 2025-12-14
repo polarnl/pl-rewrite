@@ -14,6 +14,9 @@ import { Route as HomeStartRouteImport } from './routes/home/start'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as AuthBannedRouteImport } from './routes/auth/banned'
+import { Route as AdminNeinRouteImport } from './routes/admin/nein'
+import { Route as AdminAdminRouteImport } from './routes/admin/admin'
+import { Route as AdminUserUseridRouteImport } from './routes/admin/user.$userid'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,54 +43,95 @@ const AuthBannedRoute = AuthBannedRouteImport.update({
   path: '/auth/banned',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminNeinRoute = AdminNeinRouteImport.update({
+  id: '/admin/nein',
+  path: '/admin/nein',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAdminRoute = AdminAdminRouteImport.update({
+  id: '/admin/admin',
+  path: '/admin/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUserUseridRoute = AdminUserUseridRouteImport.update({
+  id: '/admin/user/$userid',
+  path: '/admin/user/$userid',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin/admin': typeof AdminAdminRoute
+  '/admin/nein': typeof AdminNeinRoute
   '/auth/banned': typeof AuthBannedRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/home/start': typeof HomeStartRoute
+  '/admin/user/$userid': typeof AdminUserUseridRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/admin': typeof AdminAdminRoute
+  '/admin/nein': typeof AdminNeinRoute
   '/auth/banned': typeof AuthBannedRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/home/start': typeof HomeStartRoute
+  '/admin/user/$userid': typeof AdminUserUseridRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin/admin': typeof AdminAdminRoute
+  '/admin/nein': typeof AdminNeinRoute
   '/auth/banned': typeof AuthBannedRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/home/start': typeof HomeStartRoute
+  '/admin/user/$userid': typeof AdminUserUseridRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin/admin'
+    | '/admin/nein'
     | '/auth/banned'
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/home/start'
+    | '/admin/user/$userid'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/banned' | '/auth/sign-in' | '/auth/sign-up' | '/home/start'
+  to:
+    | '/'
+    | '/admin/admin'
+    | '/admin/nein'
+    | '/auth/banned'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/home/start'
+    | '/admin/user/$userid'
   id:
     | '__root__'
     | '/'
+    | '/admin/admin'
+    | '/admin/nein'
     | '/auth/banned'
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/home/start'
+    | '/admin/user/$userid'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminAdminRoute: typeof AdminAdminRoute
+  AdminNeinRoute: typeof AdminNeinRoute
   AuthBannedRoute: typeof AuthBannedRoute
   AuthSignInRoute: typeof AuthSignInRoute
   AuthSignUpRoute: typeof AuthSignUpRoute
   HomeStartRoute: typeof HomeStartRoute
+  AdminUserUseridRoute: typeof AdminUserUseridRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -127,15 +171,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthBannedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/nein': {
+      id: '/admin/nein'
+      path: '/admin/nein'
+      fullPath: '/admin/nein'
+      preLoaderRoute: typeof AdminNeinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/admin': {
+      id: '/admin/admin'
+      path: '/admin/admin'
+      fullPath: '/admin/admin'
+      preLoaderRoute: typeof AdminAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/user/$userid': {
+      id: '/admin/user/$userid'
+      path: '/admin/user/$userid'
+      fullPath: '/admin/user/$userid'
+      preLoaderRoute: typeof AdminUserUseridRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminAdminRoute: AdminAdminRoute,
+  AdminNeinRoute: AdminNeinRoute,
   AuthBannedRoute: AuthBannedRoute,
   AuthSignInRoute: AuthSignInRoute,
   AuthSignUpRoute: AuthSignUpRoute,
   HomeStartRoute: HomeStartRoute,
+  AdminUserUseridRoute: AdminUserUseridRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

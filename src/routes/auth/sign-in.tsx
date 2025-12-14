@@ -14,7 +14,6 @@ import { redirect } from '@tanstack/react-router'
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { QOUTES } from '@/utils/constants';
-import { Key } from 'lucide-react';
 
 export const Route = createFileRoute('/auth/sign-in')({
   validateSearch: (search: Record<string, unknown>) => {
@@ -66,13 +65,13 @@ export const Route = createFileRoute('/auth/sign-in')({
           path: '/',
           sameSite: 'lax',
           maxAge: 60 * 60 * 24 * 30,
-        })
+        });
 
         if (!user.loginAllowed) {
-          throw redirect({ to: '/auth/banned' })
+          throw redirect({ to: '/auth/banned' });
         }
 
-        throw redirect({ to: '/home/start' })
+        throw redirect({ to: '/home/start' });
       }
     }
   },
@@ -158,7 +157,7 @@ function RouteComponent() {
 
                 <p className="text-center text-neutral-500">
                   Heb je nog geen account?
-                  <Link to="/auth/sign-up" search={{ err: undefined }} className="pl-2 font-bold text-neutral-400">Maak een account aan!</Link>
+                  <Link to="/auth/sign-up" preload={'intent'} search={{ err: undefined }} className="pl-2 font-bold text-neutral-400">Maak een account aan!</Link>
                 </p>
               </form>
             </div>

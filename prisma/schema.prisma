@@ -1,5 +1,5 @@
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -9,7 +9,7 @@ generator client {
 }
 
 model config {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid())
   key       String   @unique
   value     String
   createdAt DateTime @default(now())
@@ -17,27 +17,75 @@ model config {
 }
 
 model User {
-  id             String    @id @map("_id") @db.String
-  gebruikersnaam String    @unique
+  id             String      @id @default(uuid())
+  gebruikersnaam String      @unique
   name           String
-  email          String?   @unique
+  email          String?     @unique
   emailVerified  DateTime?
   image          String?
   password       String
   salt           String
-  theme          String?   @default("dark")
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  loginAllowed   Boolean   @default(true)
-  forumBanned    Boolean   @default(false)
+  theme          Theme?      @default(DARK)
+  role           Role        @default(STUDENT)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  loginAllowed   Boolean     @default(true)
+  forumBanned    Boolean     @default(false)
+  sessions       Session[]
+  lists          list[]
+  forumPosts     forumPost[]
 }
 
 model Session {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid())
   sessionID String   @unique
-  userId    String   @db.String
   expires   DateTime
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model list {
+  id        String     @id @default(uuid())
+  name      String
+  items     listItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User?      @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
+model listItem {
+  id             String  @id @default(uuid())
+  key            String
+  value          String
+  correctCount   Int     @default(0)
+  incorrectCount Int     @default(0)
+  list           list?   @relation(fields: [listId], references: [id])
+  listId         String?
+}
+
+model forumPost {
+  id          String      @id @default(uuid())
+  title       String
+  content     String
+  author      User        @relation(fields: [authorId], references: [id])
+  authorId    String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  reactions   forumPost[]
+  forumPost   forumPost?  @relation(fields: [forumPostId], references: [id])
+  forumPostId String?
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+enum Theme {
+  LIGHT
+  DARK
 }

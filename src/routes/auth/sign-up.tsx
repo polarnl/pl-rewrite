@@ -7,11 +7,11 @@ import { Image } from '@unpic/react'
 import { Input } from "@/components/ui/input"
 import { Label } from '@/components/ui/label';
 import Button1 from '@/components/button/Button1';
-import { setCookie } from '@tanstack/react-start/server'
 import { redirect } from '@tanstack/react-router'
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { QOUTES } from '@/utils/constants';
+import { setCookie } from '@tanstack/react-start/server';
 
 export const Route = createFileRoute('/auth/sign-up')({
   validateSearch: (search: Record<string, unknown>) => {
@@ -27,14 +27,21 @@ export const Route = createFileRoute('/auth/sign-up')({
   },
   server: {
     handlers: {
-      // Inlog route nadat de form is verzonden
       POST: async ({ request }) => {
         const formData = await request.formData()
         const email = formData.get('email') as string
         const password = formData.get('password') as string
         const gebruikersnaam = formData.get('gebruikersnaam') as string
 
-        const existingUser = await prisma.user.findUnique({ where: { email } })
+        const existingUser = await prisma.user.findFirst({
+          where: {
+            OR: [
+              { email: email },
+              { gebruikersnaam: gebruikersnaam }
+            ]
+          }
+        });
+
         if (existingUser) {
           throw redirect({
             to: '/auth/sign-in',
@@ -44,32 +51,31 @@ export const Route = createFileRoute('/auth/sign-up')({
             statusCode: 303
           })
         }
-        const existingUsername = await prisma.user.findUnique({ where: { gebruikersnaam: gebruikersnaam } })
-        if (existingUsername) {
-          throw redirect({
-            to: '/auth/sign-up',
-            search: {
-              err: 'username_exists',
-            },
-            statusCode: 303
-          })
-        }
+
         const salt = generateSalt();
         const hashedPassword = await hashPassword(password, salt);
         const user = await prisma.user.create({
           data: {
-            email,
             name: gebruikersnaam,
+            email: email,
             gebruikersnaam: gebruikersnaam,
             password: hashedPassword,
-            salt,
-            id: crypto.randomUUID(),
-
+            salt: salt,
           }
         });
+        if (hashedPassword !== user.password) {
+          throw redirect({
+            to: '/auth/sign-in',
+            search: {
+              err: 'invalid_credentials',
+            },
+            statusCode: 303
+          })
+        };
 
-        const session = await generateSession(user.id)
-        const cookieValue = await generateSessionCookie(session.sessionID)
+
+        const session = await generateSession(user.id);
+        const cookieValue = await generateSessionCookie(session.sessionID);
 
         setCookie('polarlearn.session', cookieValue, {
           httpOnly: true,
@@ -77,7 +83,12 @@ export const Route = createFileRoute('/auth/sign-up')({
           sameSite: 'lax',
           maxAge: 60 * 60 * 24 * 30,
         })
-        throw redirect({ to: '/home/start', statusCode: 200 })
+
+        if (!user.loginAllowed) {
+          throw redirect({ to: '/auth/banned' })
+        }
+
+        throw redirect({ to: '/home/start' })
       }
     }
   },
@@ -153,10 +164,14 @@ function RouteComponent() {
 
                 <Button1 type="submit" text="Aanmelden" className="w-full" />
               </form>
+              <p className="text-center text-neutral-500">
+                Heb je al een account?
+                <Link to="/auth/sign-in" preload={'intent'} search={{ err: undefined }} className="pl-2 font-bold text-neutral-400">Log dan nu in!</Link>
+              </p>
             </div>
           </div>
         </div>
-      </section>
+      </section >
     </>
   )
 }
