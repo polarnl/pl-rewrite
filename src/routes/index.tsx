@@ -249,7 +249,7 @@ function App() {
           <div className='flex flex-col items-center justify-center'>
             <h1 className='text-4xl font-bold'>Wat doe jij nog hier?</h1>
             <div className='h-8' />
-            <Button1 text='Start met leren!' redirectTo='/app/start' />
+            <Button1 text='Start met leren!' redirectTo='/home/start' />
           </div>
         </div>
         <div className='h-8' />

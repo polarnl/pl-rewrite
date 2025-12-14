@@ -53,27 +53,14 @@ export async function decryptSessionCookie(sessionCookie: string): Promise<{ ses
     if (!process.env.SECRET) {
       reject(new Error('process.env.SECRET is missing'));
     }
-
+    
     const secret = crypto.createHash('sha256')
       .update(process.env.SECRET as string)
       .digest();
-
+    
     const { plaintext } = await compactDecrypt(sessionCookie, secret);
     const decoded = new TextDecoder().decode(plaintext);
     const sessionData = JSON.parse(decoded);
     resolve(sessionData);
   })
-}
-export async function sessionToUser(sessionCookie: string) {
-
-  const secret = crypto.createHash('sha256')
-    .update(process.env.SECRET as string)
-    .digest();
-
-  const { plaintext } = await compactDecrypt(sessionCookie, secret);
-  const decoded = new TextDecoder().decode(plaintext);
-  const sessionData = JSON.parse(decoded);
-  const session = await prisma.session.findUnique({ where: { sessionID: sessionData.sessionId } });
-  const user = await prisma.user.findUnique({ where: { id: session?.userId } });
-  return user;
 }
