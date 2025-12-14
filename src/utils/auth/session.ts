@@ -2,7 +2,6 @@ import { prisma } from '@/utils/db'
 import { CompactEncrypt, compactDecrypt } from "jose";
 import crypto from 'crypto';
 import { resolve } from 'path';
-import type { User } from '@prisma/client'
 
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 2;
 const expires = new Date(Date.now() + SESSION_TTL_MS);
@@ -65,17 +64,16 @@ export async function decryptSessionCookie(sessionCookie: string): Promise<{ ses
     resolve(sessionData);
   })
 }
-export async function sessionToUser(sessionCookie: string): Promise<User | null> {
-  const decodedSession = await decryptSessionCookie(sessionCookie);
-  const sessionData: { sessionId: string; exp: string } = decodedSession;
+export async function sessionToUser(sessionCookie: string) {
+
+  const secret = crypto.createHash('sha256')
+    .update(process.env.SECRET as string)
+    .digest();
+
+  const { plaintext } = await compactDecrypt(sessionCookie, secret);
+  const decoded = new TextDecoder().decode(plaintext);
+  const sessionData = JSON.parse(decoded);
   const session = await prisma.session.findUnique({ where: { sessionID: sessionData.sessionId } });
-  if (!session) {
-    return null;
-  }
-  if (new Date(session.expires) < new Date()) {
-    await prisma.session.delete({ where: { sessionID: session.sessionID } });
-    return null;
-  }
   const user = await prisma.user.findUnique({ where: { id: session?.userId } });
   return user;
 }

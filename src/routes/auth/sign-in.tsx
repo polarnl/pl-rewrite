@@ -88,8 +88,6 @@ function RouteComponent() {
       if (err === 'user_exists') toast.error("Er bestaat al een account met dit e-mailadres. Probeer in te loggen.");
       else if (err === 'invalid_credentials') {
         toast.error("Verkeerde inloggegevens. Probeer het opnieuw, of klik op \"Wachtwoord vergeten\".");
-      } else if (err === 'not_authenticated') {
-        toast.error("Je moet ingelogd zijn om deze pagina te bekijken.");
       }
       router.history.replace('/auth/sign-in');
     }
