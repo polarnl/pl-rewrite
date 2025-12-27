@@ -6,8 +6,9 @@
 </div>
 
 <div align="center">
+  <img alt="Dynamic JSON Badge" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpolarnl%2Fpl-rewrite%2Frefs%2Fheads%2Fmain%2Fpackage.json&query=%24.version&label=Version">
   <img alt="Dynamic JSON Badge" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fghloc.vercel.app%2Fapi%2Fpolarnl%2Fpl-rewrite%2Fbadge&query=%24.message&label=Lijnen%20van%20code%3A&color=%232add21">
-  <a href="https://github.com/polarnl/pl-rewrite/blob/stable/LICENSE">
+  <a href="https://github.com/polarnl/pl-rewrite/blob/main/LICENSE">
     <img alt="GitHub License" src="https://img.shields.io/github/license/polarnl/pl-rewrite">
   </a>
   <a href="https://github.com/polarnl/pl-rewrite/commit">
