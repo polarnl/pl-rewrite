@@ -28,7 +28,7 @@
 
 ## Wat kan PolarLearn (Rewrite) tot nu toe?
 
-Geen idee. ik update dit als ik er eens zin in heb! ~tmrx
+We hebben een homepagina en auth werkende. dat is echt 1% van de functies die we willen dus hulp is welkom.
 
 ---
 
@@ -49,4 +49,4 @@ Join onze [Discord Server](https://discord.gg/TdYzXDzqSB) -
 
 Als je een suggestie hebt voor een nieuwe functie of er is een fout in het systeem, ga dan naar de [issue pagina van GitHub](https://github.com/polarnl/pl-rewrite/issues), en maak daar een nieuwe issue aan. Label hem correct en wees duidelijk en je functie komt er misschien wel in! Je kan ook in de [discord chat](https://discord.gg/TdYzXDzqSB) praten en contact opnemen.
 
-Als je wilt bijdragen aan PolarLearn en kan programmeren in TypeScript met Next.js, kan je het best in de [Discord](https://discord.gg/TdYzXDzqSB) vragen hoe je kan helpen. lees ook de [CONTRIBUTING.md](https://github.com/polarnl/pl-rewrite/blob/stable/CONTRIBUTING.md) voor de duidelijkheid.
+Als je wilt bijdragen aan PolarLearn en kan programmeren in TypeScript met Tanstack, kan je het best in de [Discord](https://discord.gg/TdYzXDzqSB) vragen hoe je kan helpen. lees ook de [CONTRIBUTING.md](https://github.com/polarnl/pl-rewrite/blob/stable/CONTRIBUTING.md) voor de duidelijkheid.
