@@ -1,3 +1,9 @@
+> [!IMPORTANT]
+> Deze repo krijcht geen updates meer.  
+> Voor de up-to-date versie kijk [hier](https://github.com/polarnl/PolarLearn/tree/fix/rewrite)
+
+<br>  
+
 > [!WARNING]
 > Dit is de rewrite van PolarLearn, veel van de oude code was rommelig, dus wij maken het van het begin af aan!
 <div align="center">
